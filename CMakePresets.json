@@ -1,0 +1,29 @@
+{
+   "version": 5,
+   "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 25,
+      "patch": 0
+   },
+   "configurePresets": [
+      {
+         "name": "common_config",
+         "description": "General settings that apply to all configurations.",
+         "hidden": true,
+         "generator": "Ninja",
+         "binaryDir": "${sourceDir}/build/${presetName}"
+      },
+      {
+         "name": "Unix_Debug",
+         "description": "Settings that apply to Gcc Unix Debug configurations.",
+         "inherits": "common_config",
+         "cacheVariables": {
+            "CMAKE_CXX_COMPILER": "clang++",
+            "CMAKE_BUILD_TYPE": "Debug",
+            "GENERAL_COMPILER_WARNINGS": "-pedantic;-Wall;-Wextra;-Wextra-semi;-Wshadow;-Wnon-virtual-dtor;-Wold-style-cast;-Wcast-align;-Wunused;-Woverloaded-virtual;-Wpedantic;-Wconversion;-Wsign-conversion;-Wnull-dereference;-Wdouble-promotion;-Wformat=2;-Wimplicit-fallthrough;-Weffc++",
+            "SPECIFIC_COMPILER_WARNINGS": "-Wmisleading-indentation;-Wduplicated-cond;-Wduplicated-branches;-Wlogical-op;-Wuseless-cast",
+            "SANITIZER_FLAGS": "-fsanitize=address,undefined"
+         }
+      }
+   ]
+}
