@@ -15,4 +15,4 @@ add_subdirectory(src)
 
 # Create executable.
 add_executable(ThumbnailCreator main.cpp)
-target_link_libraries(ThumbnailCreator PRIVATE App ${SANITIZER_FLAGS})
+target_link_libraries(ThumbnailCreator PRIVATE ${SANITIZER_FLAGS} App Window)

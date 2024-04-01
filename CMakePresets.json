@@ -11,7 +11,8 @@
          "description": "General settings that apply to all configurations.",
          "hidden": true,
          "generator": "Ninja",
-         "binaryDir": "${sourceDir}/build/${presetName}"
+         "binaryDir": "${sourceDir}/build/${presetName}",
+         "toolchainFile": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
       },
       {
          "name": "Unix_Debug",
@@ -20,6 +21,7 @@
          "cacheVariables": {
             "CMAKE_CXX_COMPILER": "clang++",
             "CMAKE_BUILD_TYPE": "Debug",
+            "VCPKG_DEFAULT_TRIPLET": "x64-linux",
             "GENERAL_COMPILER_WARNINGS": "-pedantic;-Wall;-Wextra;-Wextra-semi;-Wshadow;-Wnon-virtual-dtor;-Wold-style-cast;-Wcast-align;-Wunused;-Woverloaded-virtual;-Wpedantic;-Wconversion;-Wsign-conversion;-Wnull-dereference;-Wdouble-promotion;-Wformat=2;-Wimplicit-fallthrough;-Weffc++",
             "SPECIFIC_COMPILER_WARNINGS": "-Wmisleading-indentation;-Wduplicated-cond;-Wduplicated-branches;-Wlogical-op;-Wuseless-cast",
             "SANITIZER_FLAGS": "-fsanitize=address,undefined"

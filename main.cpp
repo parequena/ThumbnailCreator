@@ -1,11 +1,16 @@
-#include <iostream> // std::cout
+#include <iostream>
 
 import App;
+import Window;
 
-int main()
+auto main() -> int
 {
    App app{ "this_is_an_app" };
 
-   std::cout << "Hello : " << app.Str() << '\n';
+   Window window{};
+   window.Update();
+
+   std::cout << "Hello World!\n";
+
    return EXIT_SUCCESS;
 }
