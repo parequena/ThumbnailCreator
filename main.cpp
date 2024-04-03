@@ -8,7 +8,6 @@ auto main() -> int
    App app{ "this_is_an_app" };
 
    Window window{};
-   window.Update();
 
    std::cout << "Hello World!\n";
 

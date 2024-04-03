@@ -3,7 +3,6 @@
 #   - ImGui-SFML
 
 find_package(imgui CONFIG REQUIRED)
-find_package(ImGui-SFML CONFIG REQUIRED)
 
 add_library(Window)
 target_sources(Window
@@ -11,7 +10,8 @@ target_sources(Window
     FILE_SET CXX_MODULES FILES
     Window.cxx
 )
-target_link_libraries(Window PRIVATE imgui::imgui ImGui-SFML::ImGui-SFML)
+target_compile_options(Window PRIVATE ${PROJECT_WARNINGS})
+target_link_libraries(Window PRIVATE imgui::imgui)
 
 
 add_library(App)
@@ -20,3 +20,4 @@ target_sources(App
     FILE_SET CXX_MODULES FILES
     App.cxx
 )
+target_compile_options(App PRIVATE ${PROJECT_WARNINGS})

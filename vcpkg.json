@@ -5,7 +5,12 @@
    "description": "A tiny Thumbnail Creator for Youtube",
    "homepage": "https://github.com/parequena/ThumbnailCreator",
    "dependencies": [
-      "imgui",
-      "imgui-sfml"
+      {
+         "name": "imgui",
+         "features": [
+            "glfw-binding",
+            "vulkan-binding"
+         ]
+      }
    ]
 }
