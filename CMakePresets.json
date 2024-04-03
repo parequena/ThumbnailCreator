@@ -1,17 +1,16 @@
 {
-   "version": 5,
-   "cmakeMinimumRequired": {
-      "major": 3,
-      "minor": 25,
-      "patch": 0
-   },
+  "version": 5,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
   "configurePresets": [
     {
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "VCPKG_BUILD_TYPE": "release"
       },
-      "clangTidyChecks": "* -abseil-* -altera-* -android-* -fuchsia-* -google-* -llvm* -modernize-use-trailing-return-type -zircon-* -readability-else-after-return -readability-static-accessed-through-instance -readability-avoid-const-params-in-decls -cppcoreguidelines-* -misc-non-private-member-variables-in-classes ",
       "description": "General settings that apply to all configurations.",
       "generator": "Ninja",
       "hidden": true,
@@ -23,7 +22,7 @@
       "description": "Settings that apply Clang Debug configurations.",
       "inherits": "common_config",
       "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
         "CMAKE_BUILD_TYPE": "Debug",
         "GENERAL_COMPILER_WARNINGS": "-pedantic;-Wall;-Wextra;-Wshadow;-Wnon-virtual-dtor;-Wold-style-cast;-Wcast-align;-Wunused;-Woverloaded-virtual;-Wpedantic;-Wconversion;-Wsign-conversion;-Wmisleading-indentation;-Wnull-dereference;-Wdouble-promotion;-Wformat=2;-Wimplicit-fallthrough;-Weffc++",
         "SPECIFIC_COMPILER_WARNINGS": "-Weverything;-Wno-c++98-compat;-Wno-c++98-compat-pedantic;-Wno-global-constructors;-Wno-unsafe-buffer-usage",

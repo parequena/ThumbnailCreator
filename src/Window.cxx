@@ -13,24 +13,29 @@ module;
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 
+#if defined(__linux__)
+// Windows doesn't allow static functions on here.
+#define CONDITIONAL_STATIC static
+#endif
+
 export module Window;
 
 // Data
-VkAllocationCallbacks* g_Allocator = nullptr;
-VkInstance g_Instance = VK_NULL_HANDLE;
-VkPhysicalDevice g_PhysicalDevice = VK_NULL_HANDLE;
-VkDevice g_Device = VK_NULL_HANDLE;
+CONDITIONAL_STATIC VkAllocationCallbacks* g_Allocator = nullptr;
+CONDITIONAL_STATIC VkInstance g_Instance = VK_NULL_HANDLE;
+CONDITIONAL_STATIC VkPhysicalDevice g_PhysicalDevice = VK_NULL_HANDLE;
+CONDITIONAL_STATIC VkDevice g_Device = VK_NULL_HANDLE;
 static constexpr std::uint32_t originalQueueFamily{ 4294967295 };
-uint32_t g_QueueFamily = 4294967295;
-VkQueue g_Queue = VK_NULL_HANDLE;
-VkDebugReportCallbackEXT g_DebugReport = VK_NULL_HANDLE;
-VkPipelineCache g_PipelineCache = VK_NULL_HANDLE;
-VkDescriptorPool g_DescriptorPool = VK_NULL_HANDLE;
-ImGui_ImplVulkanH_Window g_MainWindowData;
-uint32_t g_MinImageCount = 2;
-bool g_SwapChainRebuild = false;
+CONDITIONAL_STATIC uint32_t g_QueueFamily = 4294967295;
+CONDITIONAL_STATIC VkQueue g_Queue = VK_NULL_HANDLE;
+CONDITIONAL_STATIC VkDebugReportCallbackEXT g_DebugReport = VK_NULL_HANDLE;
+CONDITIONAL_STATIC VkPipelineCache g_PipelineCache = VK_NULL_HANDLE;
+CONDITIONAL_STATIC VkDescriptorPool g_DescriptorPool = VK_NULL_HANDLE;
+CONDITIONAL_STATIC ImGui_ImplVulkanH_Window g_MainWindowData;
+CONDITIONAL_STATIC uint32_t g_MinImageCount = 2;
+CONDITIONAL_STATIC bool g_SwapChainRebuild = false;
 
-void check_vk_result(VkResult err)
+CONDITIONAL_STATIC void check_vk_result(VkResult err)
 {
    if (err == 0)
    {
@@ -45,7 +50,7 @@ void check_vk_result(VkResult err)
    }
 }
 
-bool IsExtensionAvailable(const ImVector<VkExtensionProperties>& properties, const char* extension)
+CONDITIONAL_STATIC bool IsExtensionAvailable(const ImVector<VkExtensionProperties>& properties, const char* extension)
 {
    for (const VkExtensionProperties& p : properties)
    {
@@ -57,7 +62,7 @@ bool IsExtensionAvailable(const ImVector<VkExtensionProperties>& properties, con
    return false;
 }
 
-VkPhysicalDevice SetupVulkan_SelectPhysicalDevice()
+CONDITIONAL_STATIC VkPhysicalDevice SetupVulkan_SelectPhysicalDevice()
 {
    uint32_t gpu_count{};
    VkResult err = vkEnumeratePhysicalDevices(g_Instance, &gpu_count, nullptr);
@@ -90,7 +95,7 @@ VkPhysicalDevice SetupVulkan_SelectPhysicalDevice()
    return VK_NULL_HANDLE;
 }
 
-void SetupVulkan(ImVector<const char*> instance_extensions)
+CONDITIONAL_STATIC void SetupVulkan(ImVector<const char*> instance_extensions)
 {
    VkResult err{};
 
@@ -109,7 +114,9 @@ void SetupVulkan(ImVector<const char*> instance_extensions)
 
       // Enable required extensions
       if (IsExtensionAvailable(properties, VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME))
+      {
          instance_extensions.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
+      }
 #ifdef VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME
       if (IsExtensionAvailable(properties, VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME))
       {
@@ -203,7 +210,7 @@ void SetupVulkan(ImVector<const char*> instance_extensions)
 
 // All the ImGui_ImplVulkanH_XXX structures/functions are optional helpers used by the demo.
 // Your real engine/app may not use them.
-void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int width, int height)
+CONDITIONAL_STATIC void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int width, int height)
 {
    wd->Surface = surface;
 
@@ -240,16 +247,19 @@ void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int w
      g_Instance, g_PhysicalDevice, g_Device, wd, g_QueueFamily, g_Allocator, width, height, g_MinImageCount);
 }
 
-void CleanupVulkan()
+CONDITIONAL_STATIC void CleanupVulkan()
 {
    vkDestroyDescriptorPool(g_Device, g_DescriptorPool, g_Allocator);
    vkDestroyDevice(g_Device, g_Allocator);
    vkDestroyInstance(g_Instance, g_Allocator);
 }
 
-void CleanupVulkanWindow() { ImGui_ImplVulkanH_DestroyWindow(g_Instance, g_Device, &g_MainWindowData, g_Allocator); }
+CONDITIONAL_STATIC void CleanupVulkanWindow()
+{
+   ImGui_ImplVulkanH_DestroyWindow(g_Instance, g_Device, &g_MainWindowData, g_Allocator);
+}
 
-void FrameRender(ImGui_ImplVulkanH_Window* wd, ImDrawData* draw_data)
+CONDITIONAL_STATIC void FrameRender(ImGui_ImplVulkanH_Window* wd, ImDrawData* draw_data)
 {
    VkResult err;
 
@@ -318,7 +328,7 @@ void FrameRender(ImGui_ImplVulkanH_Window* wd, ImDrawData* draw_data)
    }
 }
 
-void FramePresent(ImGui_ImplVulkanH_Window* wd)
+CONDITIONAL_STATIC void FramePresent(ImGui_ImplVulkanH_Window* wd)
 {
    if (g_SwapChainRebuild)
    {
@@ -342,7 +352,7 @@ void FramePresent(ImGui_ImplVulkanH_Window* wd)
    wd->SemaphoreIndex = (wd->SemaphoreIndex + 1) % wd->SemaphoreCount; // Now we can use the next set of semaphores
 }
 
-void glfw_error_callback(int error, const char* description)
+CONDITIONAL_STATIC void glfw_error_callback(int error, const char* description)
 {
    std::cerr << "GLFW Error " << error << " : " << description << '\n';
 }
@@ -442,7 +452,7 @@ export struct Window
          ImGui_ImplGlfw_NewFrame();
          ImGui::NewFrame();
 
-         ImGui::SetNextWindowPos(ImVec2{ 0.0f, 0.0f});
+         ImGui::SetNextWindowPos(ImVec2{ 0.0f, 0.0f });
          ImGui::SetNextWindowSize(ImVec2{ windowWidth_, windowHeight_ });
 
          ImGuiWindowFlags flags{ ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration };
@@ -491,10 +501,15 @@ export struct Window
    }
 
 private:
-   static constexpr std::uint32_t windowWidth_{ 1280 };
-   static constexpr std::uint32_t windowHeight_{ 720 };
-   static constexpr ImVec4 clear_color_{ 0.0f, 0.0f, 0.0f, 1.00f };
    GLFWwindow* window_{};
-   VkResult err_{};
    ImGui_ImplVulkanH_Window* wd_{};
+
+   static constexpr std::uint16_t windowWidth_{ 1280 };
+   static constexpr std::uint16_t windowHeight_{ 720 };
+   VkResult err_{};
+   static constexpr ImVec4 clear_color_{ 0.0f, 0.0f, 0.0f, 1.00f };
+   [[maybe_unused]] std::uint8_t a{};
+   [[maybe_unused]] std::uint8_t a_1{};
+   [[maybe_unused]] std::uint8_t a_2{};
+   [[maybe_unused]] std::uint8_t a_3{};
 };
