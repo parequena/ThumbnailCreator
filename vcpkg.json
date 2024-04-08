@@ -1,16 +1,10 @@
 {
-   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
-   "name": "thumbnailcreator",
-   "version-string": "0.1.0",
-   "description": "A tiny Thumbnail Creator for Youtube",
-   "homepage": "https://github.com/parequena/ThumbnailCreator",
-   "dependencies": [
-      {
-         "name": "imgui",
-         "features": [
-            "glfw-binding",
-            "vulkan-binding"
-         ]
-      }
-   ]
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "name": "thumbnailcreator",
+  "version-string": "0.1.0",
+  "description": "A tiny Thumbnail Creator for Youtube",
+  "homepage": "https://github.com/parequena/ThumbnailCreator",
+  "dependencies": [
+    "imgui-sfml"
+  ]
 }
