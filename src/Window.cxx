@@ -41,12 +41,16 @@ export struct Window
          }
 
          ImGui::SFML::Update(*window_, deltaClock.restart());
+         CreateMenuWindow();
+         CreateLayersWindow();
+         CreateConfigWindow();
+
+         // ImGui::SetNextWindowPos(ImVec2{ 0.f, menuSize_.y });
+         // ImGui::SetNextWindowSize(canvasSize_);
+         // ImGui::Begin(windowName_, nullptr, windowFlags_);
+         // ImGui::End();
 
          ImGui::ShowDemoWindow();
-
-         ImGui::Begin("Hello, world!");
-         ImGui::Button("Look at this pretty button");
-         ImGui::End();
 
          window_->clear();
          ImGui::SFML::Render(*window_);
@@ -57,8 +61,59 @@ export struct Window
    ~Window() noexcept { ImGui::SFML::Shutdown(); }
 
 private:
-   static constexpr std::uint16_t windowWidth_{ 1280 };
-   static constexpr std::uint16_t windowHeight_{ 720 };
+   static constexpr ImGuiWindowFlags windowFlags_{ ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar
+      | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav };
+
+   static constexpr ImVec2 menuSize_{ 1280.F, 30.F };
+   static constexpr ImVec2 canvasSize_{ 1280.F, 720.F };
+   static constexpr ImVec2 layersSize_{ 200.F, 500.F };
+   static constexpr ImVec2 configSize_{ 200.F, canvasSize_.y - layersSize_.y };
+
+   static constexpr std::uint16_t windowWidth_{ static_cast<std::uint16_t>(canvasSize_.x)
+      + static_cast<std::uint16_t>(layersSize_.x) };
+   static constexpr std::uint16_t windowHeight_{ static_cast<std::uint16_t>(canvasSize_.y)
+      + static_cast<std::uint16_t>(menuSize_.y) };
    static constexpr auto windowName_{ "ThumbnailCreator" };
    std::unique_ptr<sf::RenderWindow> window_{};
+
+   auto CreateMenuWindow() const noexcept -> void
+   {
+      ImGui::SetNextWindowPos(ImVec2{ 0.f, 0.f });
+      ImGui::SetNextWindowSize(menuSize_);
+
+      if (!ImGui::BeginMainMenuBar())
+      {
+         return;
+      }
+
+      if (ImGui::BeginMenu("Menu"))
+      {
+         ImGui::EndMenu();
+      }
+
+      if (ImGui::BeginMenu("Examples"))
+      {
+         ImGui::EndMenu();
+      }
+
+      ImGui::EndMainMenuBar();
+   }
+
+   auto CreateLayersWindow() const noexcept -> void
+   {
+      ImGui::SetNextWindowPos(ImVec2{ 1280.F, 0.f });
+
+      ImGui::SetNextWindowSize(layersSize_);
+      ImGui::Begin("Layers", nullptr, windowFlags_);
+      ImGui::End();
+   }
+
+   auto CreateConfigWindow() const noexcept -> void
+   {
+      ImGui::SetNextWindowPos(ImVec2{ 1280.F, layersSize_.y });
+
+      ImGui::SetNextWindowSize(layersSize_);
+      ImGui::Begin("Config", nullptr, windowFlags_);
+      ImGui::End();
+   }
 };
