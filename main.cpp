@@ -3,7 +3,11 @@ import Window;
 auto main() -> int
 {
    Window window{};
-   window.Update();
+   while (window.Play())
+   {
+      window.Update();
+      window.Render();
+   }
 
    return 0;
 }
