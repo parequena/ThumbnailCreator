@@ -19,7 +19,7 @@ add_subdirectory(src)
 # Create executable.
 add_executable(ThumbnailCreator main.cpp)
 target_compile_options(ThumbnailCreator PRIVATE ${PROJECT_WARNINGS})
-target_link_libraries(ThumbnailCreator PRIVATE ${SANITIZER_FLAGS} Window)
+target_link_libraries(ThumbnailCreator PRIVATE ${SANITIZER_FLAGS} Window FileManager)
 
 #
 # Compiler Warnings

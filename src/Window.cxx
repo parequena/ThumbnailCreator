@@ -2,9 +2,10 @@ module;
 
 import UI;
 
-#include <cstdint>   // std::uint32_t
-#include <exception> // std::runtime_error
-#include <memory>    // std::unique_ptr
+#include <cstdint>       // std::uint32_t
+#include <exception>     // std::runtime_error
+#include <memory>        // std::unique_ptr
+#include <unordered_map> // std::unordered_map
 
 #include <imgui-SFML.h>
 
@@ -18,7 +19,7 @@ export struct Window
 {
    explicit Window()
        : window_{ std::make_unique<sf::RenderWindow>(
-         sf::VideoMode(GetRenderWindowWidth(), GetRenderWindowHeight()), windowName_) }
+           sf::VideoMode(GetRenderWindowWidth(), GetRenderWindowHeight()), windowName_) }
    {
       if (!ImGui::SFML::Init(*window_))
       {
@@ -69,4 +70,8 @@ private:
    sf::Clock deltaClock_{};
    static constexpr auto windowName_{ "ThumbnailCreator" };
    bool keepAlive_{ true };
+
+   // Supported by IMGUI:
+   // bmp, png, tga, jpg, gif, psd, hdr, pic and pnm
+   // static constexpr std::unordered_map<std::string, std::string> Filters{};
 };
