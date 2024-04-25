@@ -1,6 +1,7 @@
 module;
 
 import UI;
+import Canvas;
 
 #include <cstdint>       // std::uint32_t
 #include <exception>     // std::runtime_error
@@ -44,8 +45,7 @@ export struct Window
 
       ImGui::SFML::Update(*window_, deltaClock_.restart());
 
-      CreateCanvasWindow();
-      CreateLayersWindow();
+      canvas_.Update();
       CreateConfigWindow();
    }
 
@@ -70,6 +70,7 @@ private:
    sf::Clock deltaClock_{};
    static constexpr auto windowName_{ "ThumbnailCreator" };
    bool keepAlive_{ true };
+   Canvas canvas_{};
 
    // Supported by IMGUI:
    // bmp, png, tga, jpg, gif, psd, hdr, pic and pnm

@@ -1,6 +1,7 @@
 # Project
 build/*
 .vscode/*
+imgui.ini
 
 # Prerequisites
 *.d

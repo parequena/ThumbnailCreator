@@ -1,7 +1,7 @@
-# Window module:
+###############################################################################################
+# Module    | FileManager
 # Handles:
-#   - imgui
-
+#   - File opener (Windows)
 add_library(FileManager)
 target_sources(FileManager
   PUBLIC
@@ -9,15 +9,11 @@ target_sources(FileManager
     FileManager.cxx
 )
 target_compile_options(FileManager PRIVATE ${PROJECT_WARNINGS})
-if(CMAKE_HOST_WIN32)
-message("As building on Windows, we need comdlg32 to link FileManager")
-target_link_libraries(FileManager PRIVATE comdlg32)
-endif()
 
-# Window module:
+###############################################################################################
+# Module    | UI
 # Handles:
 #   - imgui
-
 find_package(imgui CONFIG REQUIRED)
 add_library(UI)
 target_sources(UI
@@ -28,9 +24,38 @@ target_sources(UI
 target_compile_options(UI PRIVATE ${PROJECT_WARNINGS})
 target_link_libraries(UI PRIVATE imgui::imgui)
 
-# Window module:
+###############################################################################################
+# Module    | Canvas
 # Handles:
-#   - ImGui-SFML
+#   - Canvas Window
+add_library(Canvas)
+target_sources(Canvas
+  PUBLIC
+    FILE_SET CXX_MODULES FILES
+    Canvas.cxx
+)
+target_compile_options(Canvas PRIVATE ${PROJECT_WARNINGS})
+target_link_libraries(Canvas PRIVATE UI)
+
+###############################################################################################
+# Module    | LayerHandler
+# Handles:
+#   - Layer's config
+#   - Layers
+add_library(LayerHandler)
+target_sources(LayerHandler
+  PUBLIC
+    FILE_SET CXX_MODULES FILES
+    Layer.cxx
+    LayerHandler.cxx
+)
+target_compile_options(LayerHandler PRIVATE ${PROJECT_WARNINGS})
+target_link_libraries(LayerHandler PRIVATE UI)
+
+###############################################################################################
+# Module    | Window
+# Handles:
+#   - imgui
 find_package(ImGui-SFML CONFIG REQUIRED)
 add_library(Window)
 target_sources(Window
@@ -39,4 +64,4 @@ target_sources(Window
     Window.cxx
 )
 target_compile_options(Window PRIVATE ${PROJECT_WARNINGS})
-target_link_libraries(Window PRIVATE UI ImGui-SFML::ImGui-SFML)
+target_link_libraries(Window PRIVATE LayerHandler Canvas ImGui-SFML::ImGui-SFML)
