@@ -1,7 +1,7 @@
 module;
 
-import UI;
 import Canvas;
+import LayerHandler;
 
 #include <cstdint>       // std::uint32_t
 #include <exception>     // std::runtime_error
@@ -18,9 +18,8 @@ export module Window;
 
 export struct Window
 {
-   explicit Window()
-       : window_{ std::make_unique<sf::RenderWindow>(
-           sf::VideoMode(GetRenderWindowWidth(), GetRenderWindowHeight()), windowName_) }
+   explicit Window(unsigned int const width, unsigned int const height)
+       : window_{ std::make_unique<sf::RenderWindow>(sf::VideoMode(width, height), windowName_) }
    {
       if (!ImGui::SFML::Init(*window_))
       {
@@ -46,7 +45,7 @@ export struct Window
       ImGui::SFML::Update(*window_, deltaClock_.restart());
 
       canvas_.Update();
-      CreateConfigWindow();
+      layerHandler_.Update();
    }
 
    auto Render() const noexcept -> void
@@ -71,6 +70,7 @@ private:
    static constexpr auto windowName_{ "ThumbnailCreator" };
    bool keepAlive_{ true };
    Canvas canvas_{};
+   LayerHandler layerHandler_{};
 
    // Supported by IMGUI:
    // bmp, png, tga, jpg, gif, psd, hdr, pic and pnm
